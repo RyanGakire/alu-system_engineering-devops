@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 - Page not found</title>
+<style>
+  :root { --sky: #c9def0; --ink: #16233f; --paper: #fdfdfb; --crease: #a9bdd2; --soft: #4a5d7e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --sky: #142038; --ink: #e8eef7; --paper: #f4f6fa; --crease: #8ea3bd; --soft: #a7b6cc; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--sky); color: var(--ink); font-family: Georgia, "Times New Roman", serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px; }
+  main { width: 100%; max-width: 640px; text-align: center; }
+  svg { width: 100%; height: auto; display: block; }
+  .trail { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 2 10; stroke-linecap: round; opacity: .45; }
+  .wing { fill: var(--paper); }
+  .fold { fill: var(--crease); }
+  h1 { font-size: clamp(2rem, 7vw, 3.4rem); font-style: italic; font-weight: normal; margin: 8px 0 12px; line-height: 1.1; }
+  p { color: var(--soft); font-size: 1.1rem; line-height: 1.6; margin: 0 auto 28px; max-width: 34em; }
+  a { display: inline-block; color: var(--sky); background: var(--ink); text-decoration: none;
+    padding: 12px 22px; border-radius: 999px; font-size: 1rem; }
+  a:hover { opacity: .85; }
+  a:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <svg viewBox="0 0 600 260" role="img" aria-label="A paper plane flying away along a dotted line">
+    <path id="flight" class="trail" d="M 30 220 C 150 230, 170 70, 290 110 S 470 250, 570 40"/>
+    <g id="plane">
+      <g transform="scale(1.5) translate(-50 -30)">
+        <polygon class="wing" points="0,10 100,30 34,32"/>
+        <polygon class="wing" points="34,32 100,30 18,50"/>
+        <polygon class="fold" points="34,32 100,30 42,40"/>
+      </g>
+      <animateMotion dur="8s" repeatCount="indefinite" rotate="auto">
+        <mpath href="#flight"/>
+      </animateMotion>
+    </g>
+  </svg>
+  <h1>Ceci n'est pas une page</h1>
+  <p>Error 404. The page you asked for is not here. It seems to have folded itself into a plane and flown off.</p>
+  <a href="/">Go to the home page</a>
+</main>
+<script>
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var svg = document.querySelector("svg");
+    svg.pauseAnimations();
+    svg.setCurrentTime(5.6);
+  }
+</script>
+</body>
+</html>
