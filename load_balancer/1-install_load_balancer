@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Installs HAProxy and sends traffic to web-01 and web-02 using roundrobin
+apt-get -y update
+apt-get -y install haproxy
+grep -q "^ENABLED=1" /etc/default/haproxy || echo "ENABLED=1" >> /etc/default/haproxy
+cat > /etc/haproxy/haproxy.cfg << 'EOF'
+global
+    log /dev/log local0
+    maxconn 2048
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server 7271-web-01 52.56.224.223:80 check
+    server 7271-web-02 13.135.169.7:80 check
+EOF
+service haproxy restart
