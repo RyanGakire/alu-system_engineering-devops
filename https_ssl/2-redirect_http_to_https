@@ -1,0 +1,31 @@
+global
+    log /dev/log local0
+    maxconn 2048
+    user haproxy
+    group haproxy
+    daemon
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log global
+    mode http
+    option httplog
+    option forwardfor
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http_front
+    bind *:80
+    http-request redirect scheme https code 301
+    default_backend http_back
+
+frontend https_front
+    bind *:443 ssl crt /etc/haproxy/certs/www.ryang.tech.pem
+    http-request set-header X-Forwarded-Proto https
+    default_backend http_back
+
+backend http_back
+    balance roundrobin
+    server 7271-web-01 52.56.224.223:80 check
+    server 7271-web-02 13.135.169.7:80 check
